@@ -24,12 +24,12 @@ const Dropdown = ({
   isMulti,
   isSearchable,
   onChange,
-}) => {
+}:any) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(isMulti ? [] : null);
+  const [selectedValue, setSelectedValue] = useState<any>(isMulti ? [] : null);
   const [searchValue, setSearchValue] = useState("");
-  const searchRef = useRef();
-  const inputRef = useRef();
+  const searchRef:any = useRef();
+  const inputRef:any = useRef();
 
   useEffect(() => {
     setSearchValue("");
@@ -39,7 +39,7 @@ const Dropdown = ({
   }, [showMenu]);
 
   useEffect(() => {
-    const handler = (e) => {
+    const handler = (e:any) => {
       if (inputRef.current && !inputRef.current.contains(e.target)) {
         setShowMenu(false);
       }
@@ -50,7 +50,7 @@ const Dropdown = ({
       window.removeEventListener("click", handler);
     };
   });
-  const handleInputClick = (e) => {
+  const handleInputClick = (e:any) => {
     setShowMenu(!showMenu);
   };
 
@@ -61,7 +61,7 @@ const Dropdown = ({
     if (isMulti) {
       return (
         <div className="dropdown-tags">
-          {selectedValue.map((option) => (
+          {selectedValue.map((option:any) => (
             <div key={`${option.value} ${Math.random()}`} className="dropdown-tag-item">
               {option.label}
               <span
@@ -78,21 +78,21 @@ const Dropdown = ({
     return selectedValue.label;
   };
 
-  const removeOption = (option) => {
-    return selectedValue.filter((o) => o.value !== option.value);
+  const removeOption = (option:any) => {
+    return selectedValue.filter((o:any) => o.value !== option.value);
   };
 
-  const onTagRemove = (e, option) => {
+  const onTagRemove = (e:any, option:any) => {
     e.stopPropagation();
     const newValue = removeOption(option);
     setSelectedValue(newValue);
     onChange(newValue);
   };
 
-  const onItemClick = (option) => {
+  const onItemClick = (option:any) => {
     let newValue;
     if (isMulti) {
-      if (selectedValue.findIndex((o) => o.value === option.value) >= 0) {
+      if (selectedValue.findIndex((o:any) => o.value === option.value) >= 0) {
         newValue = removeOption(option);
       } else {
         newValue = [...selectedValue, option];
@@ -104,9 +104,9 @@ const Dropdown = ({
     onChange(newValue);
   };
 
-  const isSelected = (option) => {
+  const isSelected = (option:any) => {
     if (isMulti) {
-      return selectedValue.filter((o) => o.value === option.value).length > 0;
+      return selectedValue.filter((o:any) => o.value === option.value).length > 0;
     }
 
     if (!selectedValue) {
@@ -116,7 +116,7 @@ const Dropdown = ({
     return selectedValue.value === option.value;
   };
 
-  const onSearch = (e) => {
+  const onSearch = (e:any) => {
     setSearchValue(e.target.value);
   };
 
@@ -126,7 +126,7 @@ const Dropdown = ({
     }
 
     return options.filter(
-      (option) =>
+      (option:any) =>
         option.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
     );
   };
@@ -148,7 +148,7 @@ const Dropdown = ({
               <input onChange={onSearch} value={searchValue} ref={searchRef} />
             </div>
           )}
-          {getOptions().map((option) => (
+          {getOptions().map((option:any) => (
             <div
               onClick={() => onItemClick(option)}
               key={option.value}
