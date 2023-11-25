@@ -1,9 +1,11 @@
 interface User {
-  user_id: string;
-  user_name: string;
-  books:book[]
-  department: string;
-  reg_no: string;
+  bio:string
+  email:string
+  fullName:string
+  phoneNumber:string
+  profilePhoto:string
+  regNo:string
+  // books:book[]
 }
 
 interface book {
@@ -25,6 +27,21 @@ interface book {
     audiobook:boolean
   }
   liked:boolean
+}
+
+interface book_v1 {
+  _Id: string
+  bookName: string
+  authorName:string
+  isbn:string
+  about: string
+  coverImage:string
+  audioBook: string
+  eBook: string
+  category: string
+  hardCopyFormat: boolean
+  audioBookFormat: boolean
+  eBookFormat: boolean
 }
 type view =
   | "default"
@@ -50,4 +67,4 @@ type shelfCategory =
   | "Audio Books"
   | "Articles and Journals";
 
-export type { User, book, view, shelfCategory };
+export type { User, book, view, shelfCategory, book_v1 };

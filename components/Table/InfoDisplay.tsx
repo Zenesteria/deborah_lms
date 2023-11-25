@@ -2,42 +2,54 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table";
 
-import { table_data } from "@/util/aux_data";
-import { useState } from "react";
+// import { table_data } from "@/util/aux_data";
+import { useEffect, useState } from "react";
 import { User } from "@/interface";
 import Table from "./Table";
 import { Btn_A } from '@/components'
 import Action from "./Action";
+import axios from "axios";
 
 
 
 
 export default function index() {
   const columnHelper = createColumnHelper<User>();
-  const [data, setData] = useState<User[]>(table_data);
+  useEffect(() => {
+    axios
+      .get("https://library-management-system-4hev.onrender.com/api/user", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        let user;
+      });
+  })
+
+  const [data, setData] = useState<User[]>([]);
+
+  
 
   const columns = [
-    columnHelper.accessor("user_id", {
-      header: "User ID",
+    columnHelper.accessor("bio", {
+      header: "Bio",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("user_name", {
-      header: "Username",
+    columnHelper.accessor("fullName", {
+      header: "Full Name",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("books", {
-      header: "Books Issued",
-      cell: (info) => info.getValue().length,
-    }),
-    columnHelper.accessor("department", {
-      header: "Department",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("reg_no", {
+    // columnHelper.accessor("books", {
+    //   header: "Books Issued",
+    //   cell: (info) => info.getValue().length,
+    // }),
+    columnHelper.accessor("regNo", {
       header: "Reg No",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("user_id", {
+    columnHelper.accessor("bio", {
       header: "Actions",
       cell: Action,
     }),

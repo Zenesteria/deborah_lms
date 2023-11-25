@@ -14,7 +14,7 @@ export default function Book({link, img}:compProps) {
       className="flex-1 z-[200] max-w-[200px] min-w-[100px] mr-10 rounded-xl overflow-hidden"
     >
       <div
-        className="w-full duration-500 hover:scale-105 hover:shadow-lg bg-red-300 hover:shadow-[rgba(255,255,255,0.35)] bg-contain aspect-[1/1.25] bg-center bg-no-repeat"
+        className="w-full duration-500 hover:scale-105 hover:shadow-lg hover:shadow-[rgba(255,255,255,0.35)] bg-contain aspect-[1/1.25] bg-center bg-no-repeat"
         style={{ backgroundImage: `url('${img}')` }}
       ></div>
     </Link>

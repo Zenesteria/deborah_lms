@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Box,
@@ -17,48 +17,68 @@ import {
 import axios from "axios";
 import { useFormik, Formik } from "formik";
 import Link from "next/link";
-import {useRouter} from 'next/router'
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/dashboardSlice";
+import { setAdmin, setBooks, setUser } from "@/redux/dashboardSlice";
 
-export default function register() {
-  const router = useRouter()
-  const dispatch = useDispatch()
+export default function login() {
   const [isLoading, setIsLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      regno: "",
-        email:"",
-        password:"",
-        cpassword:""
+      email: "",
+      password: "",
     },
     onSubmit: async (values) => {
-      // alert(JSON.stringify(values, null, 2));
-      setIsLoading(true)
-      let res = await axios.post(
-        "https://library-management-system-4hev.onrender.com/api/user/signup",
-        {
-          regNo: values.regno,
-          email: values.email,
-          password: values.password,
-        }
-      );
-      setIsLoading(false)
-      if (res.data.success) {
-        const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
-          res.data.user;
-        dispatch(
-          setUser({
-            name: fullName,
-            pfp: profilePhoto,
-            regNo,
-            email,
-          })
+      //   alert(JSON.stringify(values, null, 2));
+      setIsLoading(true);
+      try {
+        let res = await axios.post(
+          "https://library-management-system-4hev.onrender.com/api/admin/login",
+
+          {
+            email: values.email,
+            password: values.password,
+          },
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+          }
         );
-        router.push("/");
+        let res_books = await axios.get(
+          "https://library-management-system-4hev.onrender.com/api/books"
+        );
+        console.log(res.data);
+        if (res.data.success) {
+          const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
+          res.data.admin;
+          console.log(res.data);
+          dispatch(
+            setAdmin({
+              name: fullName,
+              pfp: profilePhoto,
+              regNo,
+              email,
+            })
+            );
+          dispatch(
+            setBooks({
+              books:res_books.data.books
+            })
+            );
+            router.push("/admin");
+            setIsLoading(false);
+        }
+      } catch (error) {
+        setErr("Login Failed!");
+        console.log(error);
       }
-    }
-  })
+    },
+  });
   return (
     <div className="relative w-full h-screen bg-white overflow-hidden">
       <div
@@ -69,21 +89,15 @@ export default function register() {
         initialValues={{
           email: "",
           password: "",
-          cpassword: "",
-          regno: "",
         }}
         onSubmit={async (values) => {
-          
+          //   alert(JSON.stringify(values, null, 2));
         }}
         validate={(values) => {
           let errors = {
             password: "",
             email: "",
-            regno: "",
           };
-          if (values.password != values.cpassword) {
-            errors.password = "Password Does Not match";
-          }
           return errors;
         }}
       >
@@ -110,26 +124,9 @@ export default function register() {
                   style={{ backgroundImage: "url('/img/afit_logo.png')" }}
                 ></div>
                 <h1>Registration</h1>
+                {err ? <p className="text-red-500">{err}</p> : null}
                 <Stack w={"full"} spacing={4}>
                   <form onSubmit={formik.handleSubmit}>
-                    <FormControl className="my-2 " id="regnocont">
-                      <FormLabel style={{ fontSize: "calc(0.6rem + 0.25vw)" }}>
-                        Reg No.
-                      </FormLabel>
-                      <Input
-                        id="regno"
-                        placeholder="Staff ID No"
-                        _placeholder={{ fontsize: "0.5vw" }}
-                        name="regno"
-                        type="text"
-                        onChange={formik.handleChange}
-                        value={formik.values.regno}
-                        className="p-4"
-                        border={2}
-                        style={{ border: "1px solid black" }}
-                      />
-                      <FormErrorMessage>{errors.password}</FormErrorMessage>
-                    </FormControl>
                     <FormControl className="my-2 " id="emailcont">
                       <FormLabel style={{ fontSize: "calc(0.6rem + 0.25vw)" }}>
                         Email
@@ -169,23 +166,6 @@ export default function register() {
                         style={{ border: "1px solid black" }}
                       />
                     </FormControl>
-                    <FormControl className="my-2 " id="cpasswordcont">
-                      <FormLabel style={{ fontSize: "calc(0.6rem + 0.25vw)" }}>
-                        Confirm Password
-                      </FormLabel>
-                      <Input
-                        id="cpassword"
-                        placeholder="********"
-                        _placeholder={{ fontsize: "0.5vw" }}
-                        name="cpassword"
-                        type="text"
-                        onChange={formik.handleChange}
-                        value={formik.values.cpassword}
-                        className="p-4"
-                        border={2}
-                        style={{ border: "1px solid black" }}
-                      />
-                    </FormControl>
 
                     <Stack my={"5"} spacing={10}>
                       {/* <Stack
@@ -206,19 +186,13 @@ export default function register() {
                         isLoading={isLoading}
                         isDisabled={isLoading}
                       >
-                        Register
+                        Login
                       </Button>
-                      <Flex
-                        justifyContent={"center"}
-                        style={{ fontSize: "calc(0.5rem + 0.25vw)" }}
-                      >
-                        <p>
-                          Already a User?{" "}
-                          <Link className="underline text-blue-500" passHref href={'/login'}>
-                            Login now
-                          </Link>
+                      {/* <Link className="w-full" passHref href={"/register"}>
+                        <p className="text-[0.7rem] underline text-blue-600 text-center">
+                          Don't Have and Account? Register now
                         </p>
-                      </Flex>
+                      </Link> */}
                     </Stack>
                   </form>
                 </Stack>

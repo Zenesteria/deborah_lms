@@ -1,12 +1,17 @@
-import React from 'react'
+import React, {useEffect,useState} from 'react'
 import ShelfNav from './ShelfNav'
 import Book_Ver_A from '../Book_Ver_A';
+import axios from "axios"
+import { book_v1 } from '@/interface';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 interface compProps{
     
 }
 
 export default function ShelfView({}:compProps) {
+  const books = useSelector((state: RootState) => state.dashboardSlice.books);
   return (
     <div style={{ animation: "slide_up 1s ease" }}>
       <h1 className="font-bold" style={{ fontSize: "calc(0.7rem + 1vw)" }}>
@@ -15,60 +20,18 @@ export default function ShelfView({}:compProps) {
       <ShelfNav />
 
       <div className="flex w-full flex-wrap">
-        <Book_Ver_A
-          title="How to think bigger and bettter"
-          author="Steve Krug, 2000"
-          rating="4.5/5"
-          img="/img/book_cover_three.png"
-          desc={true}
-          fdisplay={true}
-          status="Borrowed"
-        />
-        <Book_Ver_A
-          title="How to think bigger and bettter"
-          author="Steve Krug, 2000"
-          rating="4.5/5"
-          img="/img/book_cover_three.png"
-          desc={true}
-          fdisplay={true}
-          status="In-Shelf"
-        />
-        <Book_Ver_A
-          title="How to think bigger and bettter"
-          author="Steve Krug, 2000"
-          rating="4.5/5"
-          img="/img/book_cover_three.png"
-          desc={true}
-          fdisplay={true}
-          status="In-Shelf"
-        />
-        <Book_Ver_A
-          title="How to think bigger and bettter"
-          author="Steve Krug, 2000"
-          rating="4.5/5"
-          img="/img/book_cover_three.png"
-          desc={true}
-          fdisplay={true}
-          status="In-Shelf"
-        />
-        <Book_Ver_A
-          title="How to think bigger and bettter"
-          author="Steve Krug, 2000"
-          rating="4.5/5"
-          img="/img/book_cover_three.png"
-          desc={true}
-          fdisplay={true}
-          status="Borrowed"
-        />
-        <Book_Ver_A
-          title="How to think bigger and bettter"
-          author="Steve Krug, 2000"
-          rating="4.5/5"
-          img="/img/book_cover_three.png"
-          desc={true}
-          fdisplay={true}
-          status="Borrowed"
-        />
+        {books.map((book) => {
+            return (
+              <Book_Ver_A
+                title={book.bookName}
+                author={book.authorName}
+                rating="4.5/5"
+                img={book.coverImage}
+                desc={true}
+                fdisplay={true}
+              />
+            );
+          })}
       </div>
     </div>
   );

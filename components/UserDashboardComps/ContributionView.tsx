@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import {
   Flex,
   Box,
@@ -17,12 +17,17 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import Book_Ver_A from '../Book_Ver_A';
+import axios from "axios"
+import { book_v1 } from '@/interface';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 interface compProps{
 
 }
 
 export default function ContributionView({}:compProps) {
+  const books = useSelector((state: RootState) => state.dashboardSlice.books);
     const formik = useFormik({
       initialValues: {
         regno: "",
@@ -166,27 +171,17 @@ export default function ContributionView({}:compProps) {
           Your Previous Contributions
         </h3>
         <div className="flex flex-wrap w-full">
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
+          {books.map((book) => {
+            return (
+              <Book_Ver_A
+                title={book.bookName}
+                author={book.authorName}
+                rating="4.5/5"
+                img={book.coverImage}
+                desc={true}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

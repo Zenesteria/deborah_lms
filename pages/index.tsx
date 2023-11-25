@@ -15,7 +15,8 @@ export default function Home() {
   const dashboardState = useSelector(
     (state: RootState) => state.dashboardSlice
   );
-  return (
+  const user = useSelector((state: RootState) => state.dashboardSlice);
+  return user.isLoggedIn ? (
     <UserDashboard>
       {/* <Head>
         <title>Create Next App</title>
@@ -24,11 +25,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
       <div className="flex-1 min-h-full p-10 flex items-center bg-[#F3F3F7] relative overflow-hidden">
-        {dashboardState.view == "default" ? <HomeView /> : null}
-        {dashboardState.view == 'Search' ? <SearchView /> : null}
-        {dashboardState.view == 'My Shelf' ? <ShelfView /> : null}
-        {dashboardState.view == 'Contribute' ? <ContributionView /> : null}
+        <div className="">
+          {dashboardState.view == "default" ? <HomeView /> : null}
+          {dashboardState.view == "Search" ? <SearchView /> : null}
+          {dashboardState.view == "My Shelf" ? <ShelfView /> : null}
+          {dashboardState.view == "Contribute" ? <ContributionView /> : null}
+        </div>
       </div>
     </UserDashboard>
+  ) : (
+    <div className="">
+      <h1>Protected Resource Please Login/Register</h1>
+    </div>
   );
 }

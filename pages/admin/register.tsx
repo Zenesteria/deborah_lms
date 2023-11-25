@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Box,
@@ -17,48 +17,48 @@ import {
 import axios from "axios";
 import { useFormik, Formik } from "formik";
 import Link from "next/link";
-import {useRouter} from 'next/router'
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/dashboardSlice";
+import { setAdmin } from "@/redux/dashboardSlice";
 
 export default function register() {
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       regno: "",
-        email:"",
-        password:"",
-        cpassword:""
+      email: "",
+      password: "",
+      cpassword: "",
     },
     onSubmit: async (values) => {
       // alert(JSON.stringify(values, null, 2));
-      setIsLoading(true)
+      setIsLoading(true);
       let res = await axios.post(
-        "https://library-management-system-4hev.onrender.com/api/user/signup",
+        "https://library-management-system-4hev.onrender.com/api/admin/signup",
         {
           regNo: values.regno,
           email: values.email,
           password: values.password,
         }
       );
-      setIsLoading(false)
+      setIsLoading(false);
       if (res.data.success) {
         const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
           res.data.user;
         dispatch(
-          setUser({
+          setAdmin({
             name: fullName,
             pfp: profilePhoto,
             regNo,
             email,
           })
         );
-        router.push("/");
+        router.push("/admin");
       }
-    }
-  })
+    },
+  });
   return (
     <div className="relative w-full h-screen bg-white overflow-hidden">
       <div
@@ -72,9 +72,7 @@ export default function register() {
           cpassword: "",
           regno: "",
         }}
-        onSubmit={async (values) => {
-          
-        }}
+        onSubmit={async (values) => {}}
         validate={(values) => {
           let errors = {
             password: "",
@@ -208,17 +206,21 @@ export default function register() {
                       >
                         Register
                       </Button>
-                      <Flex
+                      {/* <Flex
                         justifyContent={"center"}
                         style={{ fontSize: "calc(0.5rem + 0.25vw)" }}
                       >
                         <p>
                           Already a User?{" "}
-                          <Link className="underline text-blue-500" passHref href={'/login'}>
+                          <Link
+                            className="underline text-blue-500"
+                            passHref
+                            href={"/login"}
+                          >
                             Login now
                           </Link>
                         </p>
-                      </Flex>
+                      </Flex> */}
                     </Stack>
                   </form>
                 </Stack>

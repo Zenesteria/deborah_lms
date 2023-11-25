@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {TextSlider_A, NewArrivals, Book_Ver_A} from '@/components'
+import { book_v1 } from '@/interface';
+import axios from "axios"
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
 
 interface compProps{
 
 }
 
 export default function HomeView({}:compProps) {
+  const books = useSelector((state: RootState) => state.dashboardSlice.books);
   return (
     <div style={{ animation: "slide_up 1s ease" }}>
       <div className="w-full flex h-fit flex-wrap mb-10">
@@ -25,48 +30,17 @@ export default function HomeView({}:compProps) {
           Recommended for you
         </h1>
         <div className="w-full flex flex-wrap my-2">
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
+          {books.map((book) => {
+            return (
+              <Book_Ver_A
+                title={book.bookName}
+                author={book.authorName}
+                rating="4.5/5"
+                img={book.coverImage}
+                desc={true}
+              />
+            );
+          })}
         </div>
       </div>
       {/* Recent Readings */}
@@ -75,48 +49,17 @@ export default function HomeView({}:compProps) {
           Recent Readings
         </h1>
         <div className="w-full flex flex-wrap my-2">
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
+          {books.map((book) => {
+            return (
+              <Book_Ver_A
+                title={book.bookName}
+                author={book.authorName}
+                rating="4.5/5"
+                img={book.coverImage}
+                desc={true}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -126,48 +69,17 @@ export default function HomeView({}:compProps) {
           Journals, Articles & Publications
         </h1>
         <div className="w-full flex flex-wrap my-2">
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
+          {books.map((book) => {
+            return (
+              <Book_Ver_A
+                title={book.bookName}
+                author={book.authorName}
+                rating="4.5/5"
+                img={book.coverImage}
+                desc={true}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -177,48 +89,17 @@ export default function HomeView({}:compProps) {
           News
         </h1>
         <div className="w-full flex flex-wrap my-2">
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
-          <Book_Ver_A
-            title="How to think bigger and bettter"
-            author="Steve Krug, 2000"
-            rating="4.5/5"
-            img="/img/book_cover_three.png"
-            desc={true}
-          />
+          {books.map((book) => {
+            return (
+              <Book_Ver_A
+                title={book.bookName}
+                author={book.authorName}
+                rating="4.5/5"
+                img={book.coverImage}
+                desc={true}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
