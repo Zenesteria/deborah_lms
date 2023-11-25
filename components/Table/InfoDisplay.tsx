@@ -16,16 +16,20 @@ import axios from "axios";
 export default function index() {
   const columnHelper = createColumnHelper<User>();
   useEffect(() => {
-    axios
-      .get("https://library-management-system-4hev.onrender.com/api/user", {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        let user;
-      });
+    // axios
+    //   .get(
+    //     "https://library-management-system-4hev.onrender.com/api/admin/users",
+    //     {
+    //       headers: {
+    //         "Access-Control-Allow-Origin": "*",
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   )
+    //   .then((res) => {
+    //     let user;
+    //     console.log(res);
+    //   });
   })
 
   const [data, setData] = useState<User[]>([]);
