@@ -19,7 +19,7 @@ export default function BooksView() {
         >
           Available Books
         </h1>
-        <AddBooks />
+        {/* <AddBooks /> */}
       </div>
 
       <div className="w-full flex h-fit flex-wrap mb-10">

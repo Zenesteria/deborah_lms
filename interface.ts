@@ -58,6 +58,7 @@ type view =
   | "Search"
   | "My Shelf"
   | "Contribute"
+  | "Book"
 
 type shelfCategory =
   | "All Books"

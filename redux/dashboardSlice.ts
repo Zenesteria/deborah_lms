@@ -12,6 +12,7 @@ export interface initialState{
     fullName:string
     email:string
     books:book_v1[]
+    active_book:book_v1|{}
 }
 
 const initialState:initialState = {
@@ -23,7 +24,8 @@ const initialState:initialState = {
     isLoggedIn:false,
     regNo:'',
     pfp:'',
-    books:[]
+    books:[],
+    active_book:{}
 }
 
 const dashboardSlice = createSlice({
@@ -54,6 +56,10 @@ const dashboardSlice = createSlice({
             const {books} = action.payload
             state.books = books
         },
+        setActiveBook: (state,action) => {
+            const {book} = action.payload
+            state.active_book = book
+        },
         changeView:(state, action) => {
             state.view = action.payload.view
         },
@@ -65,4 +71,4 @@ const dashboardSlice = createSlice({
 });
 
 export default dashboardSlice.reducer
-export const {setUser, changeView, changeCategory, setAdmin, setBooks} = dashboardSlice.actions
+export const {setUser, changeView, changeCategory, setAdmin, setBooks, setActiveBook} = dashboardSlice.actions

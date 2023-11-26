@@ -7,6 +7,7 @@ import {
   ShelfView,
   ContributionView,
 } from "@/components";
+import BookView from "@/components/BookView";
 import { RootState } from "@/redux/store";
 import Head from "next/head";
 import { useSelector } from "react-redux";
@@ -30,6 +31,7 @@ export default function Home() {
           {dashboardState.view == "Search" ? <SearchView /> : null}
           {dashboardState.view == "My Shelf" ? <ShelfView /> : null}
           {dashboardState.view == "Contribute" ? <ContributionView /> : null}
+          {dashboardState.view == "Book" ? <BookView /> : null}
         </div>
       </div>
     </UserDashboard>

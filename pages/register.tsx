@@ -19,7 +19,7 @@ import { useFormik, Formik } from "formik";
 import Link from "next/link";
 import {useRouter} from 'next/router'
 import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/dashboardSlice";
+import { setBooks, setUser } from "@/redux/dashboardSlice";
 
 export default function register() {
   const router = useRouter()
@@ -43,6 +43,9 @@ export default function register() {
           password: values.password,
         }
       );
+      let res_books = await axios.get(
+        "https://library-management-system-4hev.onrender.com/api/books"
+      );
       setIsLoading(false)
       if (res.data.success) {
         const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
@@ -53,6 +56,11 @@ export default function register() {
             pfp: profilePhoto,
             regNo,
             email,
+          })
+        );
+        dispatch(
+          setBooks({
+            books: res_books.data.books,
           })
         );
         router.push("/");

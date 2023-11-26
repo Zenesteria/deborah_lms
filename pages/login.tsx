@@ -43,7 +43,7 @@ export default function login() {
           }
         );
         let res_books = await axios.get(
-          "https://library-management-system-4hev.onrender.com/books"
+          "https://library-management-system-4hev.onrender.com/api/books"
         );
         setIsLoading(false)
         console.log(res.data);
@@ -61,7 +61,7 @@ export default function login() {
                 books: res_books.data.books,
               })
             );
-            router.push("/admin");
+           
             router.push("/");
             setIsLoading(false);
         }
