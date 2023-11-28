@@ -1,7 +1,8 @@
 import { book } from "@/interface";
-import { changeView, setActiveBook } from "@/redux/dashboardSlice";
+import { changeView, setActiveBook, setBorrowedBooks } from "@/redux/dashboardSlice";
 import { RootState } from "@/redux/store";
 import { Box, Button, VStack } from "@chakra-ui/react";
+import axios from "axios";
 import { useRouter } from "next/router";
 import React, {useState} from "react";
 import { FaHeadphones } from "react-icons/fa";
@@ -15,6 +16,9 @@ interface compProps {
   desc: boolean;
   fdisplay?: boolean;
   status?: book["status"];
+  fromDate?:string
+  toDate?:string
+  id?:string
 }
 
 export default function Book_Ver_A({
@@ -25,19 +29,60 @@ export default function Book_Ver_A({
   title,
   fdisplay,
   status,
+  fromDate,
+  toDate,
+  id
 }: compProps) {
   const router = useRouter()
   const dispatch = useDispatch()
+  const [returnLoad, setReturnLoad] = useState(false)
   
   const user = useSelector((state:RootState) => state.dashboardSlice)
   const handleClick = () => {
-    let act_book = user.books.filter((book) => book.bookName == title)[0]
-    dispatch(setActiveBook({
-      book:act_book
-    }))
-    dispatch(changeView({
-      view:'Book'
-    }))
+    if(!fromDate){
+      let act_book = user.books.filter((book) => book.bookName == title)[0]
+      dispatch(setActiveBook({
+        book:act_book
+      }))
+      dispatch(changeView({
+        view:'Book'
+      }))
+    }
+  }
+  const handleReturn = async () => {
+    let getBook = user.borrowed_books.filter((book) => book._id == id)[0]
+    console.log(getBook)
+    setReturnLoad(true)
+    // console.log(user.borrowed_books[0]._id)
+    // console.log(id)
+    let res_return = await axios.patch(
+      `https://library-management-system-4hev.onrender.com/api/user/book/return/${getBook._id}`,
+      // {
+      //   headers: {
+      //     "Access-Control-Allow-Origin": "*",
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${user.jwt_token}`,
+      //   },
+      // }
+    );
+    let res_borrowed_books = await axios.get(
+      "https://library-management-system-4hev.onrender.com/api/user/books/borrowed",
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.jwt_token}`,
+        },
+      }
+    );
+    const borrowed_books = res_borrowed_books.data.borrowedBooks;
+    dispatch(
+      setBorrowedBooks({
+        borrowed_books,
+      })
+    );
+    console.log(res_return)
+    setReturnLoad(false)
   }
   return (
     <div onClick={handleClick} className="flex-1 flex max-w-[200px] bg-white border-[0.5px] border-slate-500 px-4 py-2 rounded-lg m-2" style={{minWidth:fdisplay?'250px':'150px'}}>
@@ -69,7 +114,7 @@ export default function Book_Ver_A({
             className=" font-light"
             style={{ fontSize: "calc(0.4rem + 0.25vw)" }}
           >
-            11 Mar 2023 09:00 AM
+           {fromDate}
           </p>
 
           <h1 className="mt-3">Submission Due</h1>
@@ -77,7 +122,7 @@ export default function Book_Ver_A({
             className=" font-light"
             style={{ fontSize: "calc(0.4rem + 0.25vw)" }}
           >
-            14 Mar 2023
+            {toDate}
           </p>
 
           <div className="flex flex-col">
@@ -106,7 +151,7 @@ export default function Book_Ver_A({
                 </Button>
               </div>
             ) : (
-              <Button color={"red.400"} border={"1px"} borderColor={"red.400"}>
+              <Button color={"red.400"} isLoading={returnLoad} isDisabled={returnLoad} onClick={handleReturn} border={"1px"} borderColor={"red.400"}>
                 Return
               </Button>
             )}

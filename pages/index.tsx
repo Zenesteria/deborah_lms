@@ -55,10 +55,22 @@ export default function login() {
           }
 
         );
+        let res_borrowed_books = await axios.get(
+          "https://library-management-system-4hev.onrender.com/api/user/books/borrowed",
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${res.data.token}`,
+            },
+          }
+        );
         setIsLoading(false)
-        // console.log(res.data);
+        // console.log(res_borrowed_books.data);
         if (res.data.success) {
             const {email, fullName, phoneNumber, profilePhoto, regNo, bio} = res.data.user
+            const borrowed_books = res_borrowed_books.data.borrowedBooks
+            console.log(borrowed_books)
             const token = res.data.token
             // console.log(res.data)
             dispatch(setUser({
@@ -66,7 +78,8 @@ export default function login() {
                 pfp:profilePhoto,
                 regNo,
                 email,
-                token
+                token,
+                borrowed_books
             }))
             dispatch(
               setBooks({

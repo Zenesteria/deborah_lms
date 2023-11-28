@@ -11,7 +11,7 @@ interface compProps{
 }
 
 export default function ShelfView({}:compProps) {
-  const books = useSelector((state: RootState) => state.dashboardSlice.books);
+  const books = useSelector((state: RootState) => state.dashboardSlice.borrowed_books);
   return (
     <div style={{ animation: "slide_up 1s ease" }}>
       <h1 className="font-bold" style={{ fontSize: "calc(0.7rem + 1vw)" }}>
@@ -23,12 +23,15 @@ export default function ShelfView({}:compProps) {
         {books.map((book) => {
             return (
               <Book_Ver_A
-                title={book.bookName}
-                author={book.authorName}
+                title={book.book.bookName}
+                author={book.book.authorName}
                 rating="4.5/5"
-                img={book.coverImage}
+                img={book.book.coverImage}
                 desc={true}
                 fdisplay={true}
+                fromDate={book.borrowDate}
+                toDate={book.returnDate}
+                id={book._id}
               />
             );
           })}
