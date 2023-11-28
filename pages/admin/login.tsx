@@ -200,11 +200,11 @@ export default function login() {
                       >
                         Login
                       </Button>
-                      {/* <Link className="w-full" passHref href={"/register"}>
+                      <Link className="w-full" passHref href={"/admin/register"}>
                         <p className="text-[0.7rem] underline text-blue-600 text-center">
                           Don't Have and Account? Register now
                         </p>
-                      </Link> */}
+                      </Link>
                     </Stack>
                   </form>
                 </Stack>

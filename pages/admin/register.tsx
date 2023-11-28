@@ -226,7 +226,7 @@ export default function register() {
                       >
                         Register
                       </Button>
-                      {/* <Flex
+                      <Flex
                         justifyContent={"center"}
                         style={{ fontSize: "calc(0.5rem + 0.25vw)" }}
                       >
@@ -235,12 +235,12 @@ export default function register() {
                           <Link
                             className="underline text-blue-500"
                             passHref
-                            href={"/login"}
+                            href={"/admin/login"}
                           >
                             Login now
                           </Link>
                         </p>
-                      </Flex> */}
+                      </Flex>
                     </Stack>
                   </form>
                 </Stack>
