@@ -12,12 +12,14 @@ export interface initialState{
     fullName:string
     email:string
     books:book_v1[]
-    active_book:book_v1|{}
+    active_book:book_v1
+    jwt_token:string
 }
 
 const initialState:initialState = {
     type:'user',
     email:'',
+    jwt_token:'',
     view:'default',
     shelfCategory:'All Books',
     fullName:'',
@@ -25,7 +27,20 @@ const initialState:initialState = {
     regNo:'',
     pfp:'',
     books:[],
-    active_book:{}
+    active_book:{
+        _Id:'',
+        bookName:'',
+        authorName:'',
+        isbn:'',
+        about:'',
+        coverImage:'',
+        audioBook:'',
+        eBook:'',
+        category:'',
+        hardCopyFormat:false,
+        eBookFormat:false,
+        audioBookFormat:false
+    }
 }
 
 const dashboardSlice = createSlice({
@@ -33,24 +48,26 @@ const dashboardSlice = createSlice({
     initialState,
     reducers:{
         setUser: (state,action) => {
-            const {name, pfp, regNo, email} = action.payload
-            console.log(action.payload)
+            const {name, pfp, regNo, email,token} = action.payload
+            // console.log(action.payload)
             state.fullName = name
             state.pfp = pfp
             state.regNo = regNo
             state.email = email
             state.isLoggedIn = true
             state.type = 'user'
+            state.jwt_token=token
         },
         setAdmin: (state,action) => {
-            const {name, pfp, regNo, email} = action.payload
-            console.log(action.payload)
+            const {name, pfp, regNo, email,token} = action.payload
+            // console.log(action.payload)
             state.fullName = name
             state.pfp = pfp
             state.regNo = regNo
             state.email = email
             state.isLoggedIn = true
             state.type = 'admin'
+            state.jwt_token=token
         },
         setBooks: (state,action) => {
             const {books} = action.payload

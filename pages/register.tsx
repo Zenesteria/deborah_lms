@@ -47,15 +47,20 @@ export default function register() {
         "https://library-management-system-4hev.onrender.com/api/books"
       );
       setIsLoading(false)
+      // console.log(res.data)
       if (res.data.success) {
+        // console.log(res.data.user)
         const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
           res.data.user;
+          const token = res.data.token
+          // console.log(token)
         dispatch(
           setUser({
             name: fullName,
             pfp: profilePhoto,
             regNo,
             email,
+            token
           })
         );
         dispatch(
@@ -63,7 +68,7 @@ export default function register() {
             books: res_books.data.books,
           })
         );
-        router.push("/");
+        router.push("/dashboard");
       }
     }
   })
@@ -222,7 +227,7 @@ export default function register() {
                       >
                         <p>
                           Already a User?{" "}
-                          <Link className="underline text-blue-500" passHref href={'/login'}>
+                          <Link className="underline text-blue-500" passHref href={'/'}>
                             Login now
                           </Link>
                         </p>

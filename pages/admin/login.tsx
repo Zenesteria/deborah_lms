@@ -18,11 +18,13 @@ import axios from "axios";
 import { useFormik, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAdmin, setBooks, setUser } from "@/redux/dashboardSlice";
+import { RootState } from "@/redux/store";
 
 export default function login() {
   const [isLoading, setIsLoading] = useState(false);
+  const user = useSelector((state:RootState) =>state.dashboardSlice )
   const [err, setErr] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
@@ -46,6 +48,7 @@ export default function login() {
             headers: {
               "Access-Control-Allow-Origin": "*",
               "Content-Type": "application/json",
+              // Authorization: `Bearer ${user.jwt_token}`,
             },
           }
         );
@@ -56,6 +59,7 @@ export default function login() {
         if (res.data.success) {
           const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
           res.data.admin;
+          const token = res.data.token
           console.log(res.data);
           dispatch(
             setAdmin({
@@ -63,6 +67,7 @@ export default function login() {
               pfp: profilePhoto,
               regNo,
               email,
+              token
             })
             );
           dispatch(

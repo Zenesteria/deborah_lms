@@ -15,6 +15,8 @@ import React,{useEffect, useState} from "react";
 import { FaCheck } from "react-icons/fa";
 import DateSelector from "./DatePicker";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 export default function BookView() {
   const handleBorrow = async () => {};
@@ -23,27 +25,49 @@ export default function BookView() {
   const [fromselectedDate, setFromSelectedDate] = useState(null);
   const [isbn, setIsbn] = useState('');
   const [desc, setDesc] = useState('');
+  const [loading, setIsloading] = useState(false);
   const [err, setErr] = useState('');
+  const [success, setSuccess] = useState('');
   
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const user = useSelector((state:RootState) => state.dashboardSlice)
   const handleFromDateSelect = (date:any) => {
     setToSelectedDate(date);
   };
   const handleSubmitBorrow = async () => {
 
         try {
+            setIsloading(true)
+            console.log({
+              borrowDate: `${fromselectedDate}`,
+              returnDate: `${toselectedDate}`,
+              bookSerialNo: `${user.active_book.isbn}`,
+              description: "Just for a few days",
+            });
             let res = await axios.post(
               "https://library-management-system-4hev.onrender.com/api/user/book/borrow",
               {
-                borrowDate: `${fromselectedDate}`,
-                returnDate: `${toselectedDate}`,
-                bookSerialNo: `${isbn}`,
+                borrowDate: `2023-11-29T12:00:00.000Z`,
+                returnDate: `2023-12-15T12:00:00.000Z`,
+                bookSerialNo: `${user.active_book.isbn}`,
                 description: "Just for a few days",
+              },
+              {
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${user.jwt_token}`,
+                },
               }
             );
-        } catch (error) {
-            console.log(error)
+            console.log(res.data)
+            setSuccess('Book Borrowed Successfully')
+            onClose()
+        } catch (error:any) {
+            setErr(error.response.data.message)
+            console.log(error.response.data.message)
         }
+        setIsloading(false)
   }
   const handleToDateSelect = (date:any) => {
     setFromSelectedDate(date);
@@ -51,32 +75,38 @@ export default function BookView() {
   useEffect(() => {
     console.log(fromselectedDate)
     console.log(toselectedDate)
-  })
+  },[fromselectedDate,toselectedDate])
   return (
-    <div className="w-full h-fit min-h-screen flex flex-wrap bg-white text-black">
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Fill Up the Details {err?err:''}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <div className="">
-                <h1>From</h1>
-              <DateSelector
-                selectedDate={fromselectedDate}
-                onSelectDate={handleFromDateSelect}
-              />
-            </div>
-            <div className="">
-                <h1>
-                    To
-                </h1>
-              <DateSelector
-                selectedDate={toselectedDate}
-                onSelectDate={handleToDateSelect}
-              />
-            </div>
-            <div className="">
+    <div className="w-full z-[500] relative h-fit flex flex-wrap bg-white text-black">
+      {user.type == "user" ? (
+        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent bg={"white"} textColor={"black"}>
+            <ModalHeader>Fill Up the Details</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <h1 className="mb-2 text-red-500">{err}</h1>
+              <div className="flex">
+                <div className="">
+                  <h1>From</h1>
+                  <div className="text-white">
+                    <DateSelector
+                      selectedDate={fromselectedDate}
+                      onSelectDate={handleFromDateSelect}
+                    />
+                  </div>
+                </div>
+                <div className="mx-2">
+                  <h1>To</h1>
+                  <div className="text-white">
+                    <DateSelector
+                      selectedDate={toselectedDate}
+                      onSelectDate={handleToDateSelect}
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* <div className="">
                 <h1>
                     Book Serial No. 
                 </h1>
@@ -84,8 +114,8 @@ export default function BookView() {
                     onChange={(e) => {setIsbn(e.target.value)}}
                     value={isbn}
                 />
-            </div>
-            {/* <div className="">
+            </div> */}
+              {/* <div className="">
                 <h1>
                     
                 </h1>
@@ -94,25 +124,32 @@ export default function BookView() {
                     value={isbn}
                 />
             </div> */}
-            <Button colorScheme="orange" onClick={handleSubmitBorrow}>
+              <Button
+                className="my-4"
+                colorScheme="orange"
+                onClick={handleSubmitBorrow}
+                isLoading={loading}
+                isDisabled={loading}
+              >
                 Borrow
-            </Button>
-          </ModalBody>
+              </Button>
+            </ModalBody>
 
-          <ModalFooter>
+            {/* <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
             <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      <div className="flex-[0.3]">
+          </ModalFooter> */}
+          </ModalContent>
+        </Modal>
+      ) : null}
+      <div className="flex-[0.7]">
         <div
           className="bg-cover bg-center bg-no-repeat w-full aspect-[2/2.5] bg-blue-300"
-          style={{ backgroundImage: `url('')` }}
+          style={{ backgroundImage: `url('${user.active_book.coverImage}')` }}
         ></div>
-        <div className=" my-2 p-4 rounded-md bg-white">
+        {/* <div className=" my-2 p-4 rounded-md bg-white">
           <h1>Buy This Book Online</h1>
           <div className="flex">
             <div
@@ -134,16 +171,14 @@ export default function BookView() {
             </Link>
           </div>
           <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsum
-            autem, ipsa eveniet, officia repellat, saepe deserunt excepturi
-            alias numquam debitis vero aliquid cum minus neque.
+            {user.active_book.about}
           </p>
-        </div>
+        </div> */}
       </div>
       <div className="flex-1 p-5">
         <div className="flex-1">
           <h1 style={{ fontSize: "calc(1rem + 1vw)" }}>
-            {`Don't Make me Think`}
+            {user.active_book.bookName}
           </h1>
           <p>
             By{" "}
@@ -151,10 +186,12 @@ export default function BookView() {
               href={"#"}
               className="underline"
               style={{ fontSize: "calc(0.7rem)" }}
-            >{`Steve Krug`}</Link>
+            >
+              {user.active_book.authorName}
+            </Link>
           </p>
           <h3>Second Edition</h3>
-          <div className="flex">
+          <div className="flex my-5">
             <div className="flex-1">
               <h1 className="font-bold">Availability</h1>
               <div className="flex">
@@ -175,10 +212,12 @@ export default function BookView() {
               <p>{`In Shelf`}</p>
             </div>
           </div>
-          <div className="flex">
-            <Button colorScheme={"orange"} className="mx-4" onClick={onOpen}>
-              BORROW
-            </Button>
+          <div className="flex my-5">
+            {user.type == "user" ? (
+              <Button colorScheme={"orange"} className="mx-4" onClick={onOpen}>
+                BORROW
+              </Button>
+            ) : null}
             <Button colorScheme={"green"} onClick={handleRead}>
               Read Now
             </Button>
@@ -186,8 +225,8 @@ export default function BookView() {
         </div>
         <div className="flex-[0.7]">
           <h1>About Author</h1>
-          <h1>{`Steve Shrug`}</h1>
-          <p>
+          <h1>{user.active_book.authorName}</h1>
+          <p className="my-3">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
             praesentium impedit, eaque adipisci atque quas eum labore, neque,
             voluptatem iusto temporibus fugit ducimus rem cupiditate.

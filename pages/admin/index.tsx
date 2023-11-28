@@ -11,6 +11,7 @@ import {
   BooksView,
   SettingsView,
 } from "@/components";
+import BookView from "@/components/BookView";
 import { RootState } from "@/redux/store";
 import { books_data, options } from "@/util/aux_data";
 import Head from "next/head";
@@ -109,6 +110,8 @@ export default function Home() {
 
         {/* Books View */}
         {dashboardState.view == "Books" ? <BooksView /> : null}
+        {/* Books View */}
+        {dashboardState.view == "Book" ? <BookView /> : null}
 
         {/* Settings View */}
         {dashboardState.view == "Settings" ||
