@@ -17,7 +17,7 @@ export default function NewArrivals() {
           New Arrivals
         </h1>
       </div>
-      <div className="flex-1 overflow-x-auto cus-scrollbar-one items-center p-4 flex">
+      <div className="flex-1 overflow-x-auto max-w-[570px] cus-scrollbar-one items-center p-4 flex">
         {user.books.map((book) => {
           return (
             <Book_Ver_A

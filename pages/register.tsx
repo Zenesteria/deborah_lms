@@ -47,11 +47,11 @@ export default function register() {
         "https://library-management-system-4hev.onrender.com/api/books"
       );
       setIsLoading(false)
-      // console.log(res.data)
+      console.log(res.data)
       if (res.data.success) {
         // console.log(res.data.user)
         const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
-          res.data.user;
+          res.data.data;
           const token = res.data.token
           // console.log(token)
         dispatch(
@@ -68,7 +68,7 @@ export default function register() {
             books: res_books.data.books,
           })
         );
-        router.push("/dashboard");
+        router.push("/");
       }
     }
   })

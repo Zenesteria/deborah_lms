@@ -89,7 +89,7 @@ export default function BookView() {
               <div className="flex">
                 <div className="">
                   <h1>From</h1>
-                  <div className="text-white">
+                  <div className="">
                     <DateSelector
                       selectedDate={fromselectedDate}
                       onSelectDate={handleFromDateSelect}
@@ -98,7 +98,7 @@ export default function BookView() {
                 </div>
                 <div className="mx-2">
                   <h1>To</h1>
-                  <div className="text-white">
+                  <div className="">
                     <DateSelector
                       selectedDate={toselectedDate}
                       onSelectDate={handleToDateSelect}

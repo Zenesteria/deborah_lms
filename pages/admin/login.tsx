@@ -53,7 +53,14 @@ export default function login() {
           }
         );
         let res_books = await axios.get(
-          "https://library-management-system-4hev.onrender.com/api/books"
+          "https://library-management-system-4hev.onrender.com/api/books",
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.jwt_token}`,
+            },
+          }
         );
         console.log(res.data);
         if (res.data.success) {

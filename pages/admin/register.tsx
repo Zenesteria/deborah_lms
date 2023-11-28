@@ -18,11 +18,13 @@ import axios from "axios";
 import { useFormik, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { setAdmin } from "@/redux/dashboardSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setAdmin, setBooks } from "@/redux/dashboardSlice";
+import { RootState } from "@/redux/store";
 
 export default function register() {
   const router = useRouter();
+  const user = useSelector((state:RootState) => state.dashboardSlice)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
   const formik = useFormik({
@@ -43,19 +45,37 @@ export default function register() {
           password: values.password,
         }
       );
+      let res_books = await axios.get(
+        "https://library-management-system-4hev.onrender.com/api/books",
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.jwt_token}`,
+          },
+        }
+      );
       setIsLoading(false);
       if (res.data.success) {
         const { email, fullName, phoneNumber, profilePhoto, regNo, bio } =
-          res.data.user;
+          res.data.data;
+          const token = res.data.token
+          console.log(res.data)
         dispatch(
           setAdmin({
             name: fullName,
             pfp: profilePhoto,
             regNo,
             email,
+            token
           })
         );
-        router.push("/admin");
+         dispatch(
+           setBooks({
+             books: res_books.data.books,
+           })
+         );
+        router.push("/admin/login");
       }
     },
   });

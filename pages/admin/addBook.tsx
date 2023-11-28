@@ -29,6 +29,7 @@ export default function AddBook() {
   const [err, setErr] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
+  const [msg,setMsg] = useState('')
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -98,7 +99,23 @@ export default function AddBook() {
               },
             }
           );
+          let res_books = await axios.get(
+            "https://library-management-system-4hev.onrender.com/api/books",
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.jwt_token}`,
+              },
+            }
+          );
+          dispatch(
+            setBooks({
+              books: res_books.data.books,
+            })
+          );
           setIsLoading(false);
+          setMsg('Book Added Successfully')
           console.log(res.data);
           //   alert(values)
         }}
@@ -133,6 +150,7 @@ export default function AddBook() {
                   style={{ backgroundImage: "url('/img/afit_logo.png')" }}
                 ></div>
                 <h1>Add a New Book</h1>
+                <h1 className=" text-green-500">{msg}</h1>
                 {err ? <p className="text-red-500">{err}</p> : null}
                 <Stack w={"full"} spacing={4}>
                   <form onSubmit={handleSubmit}>
