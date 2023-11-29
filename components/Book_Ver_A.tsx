@@ -57,13 +57,13 @@ export default function Book_Ver_A({
     // console.log(id)
     let res_return = await axios.patch(
       `https://library-management-system-4hev.onrender.com/api/user/book/return/${getBook._id}`,
-      // {
-      //   headers: {
-      //     "Access-Control-Allow-Origin": "*",
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${user.jwt_token}`,
-      //   },
-      // }
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.jwt_token}`,
+        },
+      }
     );
     let res_borrowed_books = await axios.get(
       "https://library-management-system-4hev.onrender.com/api/user/books/borrowed",
