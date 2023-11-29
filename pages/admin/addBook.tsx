@@ -27,6 +27,48 @@ export default function AddBook() {
   const [isLoading, setIsLoading] = useState(false);
   const user = useSelector((state:RootState) => state.dashboardSlice)
   const [err, setErr] = useState("");
+  const [category, setCategory] = useState("fiction");
+  let categories = [
+    "Fiction",
+
+    "Non-Fiction",
+
+    "Mystery",
+
+    "Romance",
+
+    "Science Fiction",
+
+    "Fantasy",
+
+    "Biography",
+
+    "Self-Help",
+
+    "History",
+
+    "Thriller",
+
+    "Horror",
+
+    "Poetry",
+
+    "Business",
+
+    "Travel",
+
+    "Cookbooks",
+
+    "Science",
+
+    "Technology",
+
+    "Health and Wellness",
+
+    "Children's Books",
+
+    "Young Adult (YA)",
+  ];
   const dispatch = useDispatch();
   const router = useRouter();
   const [msg,setMsg] = useState('')
@@ -70,7 +112,7 @@ export default function AddBook() {
             coverImage: values.coverImageUrl,
             audioBook: "test",
             eBook: values.ebookUrl,
-            category: values.category,
+            category:category,
             hardCopyFormat: true,
             audioBookFormat: true,
             eBookFormat: true,
@@ -115,9 +157,9 @@ export default function AddBook() {
             })
           );
           setIsLoading(false);
-          setMsg('Book Added Successfully')
+          setMsg("Book Added Successfully");
           console.log(res.data);
-          router.push('/admin')
+          router.push("/admin");
           //   alert(values)
         }}
         validate={(values) => {
@@ -260,7 +302,7 @@ export default function AddBook() {
                       <FormLabel style={{ fontSize: "calc(0.6rem + 0.25vw)" }}>
                         Category
                       </FormLabel>
-                      <Input
+                      {/* <Input
                         id="category"
                         placeholder=""
                         _placeholder={{ fontsize: "0.5vw" }}
@@ -271,7 +313,23 @@ export default function AddBook() {
                         className="p-4"
                         border={2}
                         style={{ border: "1px solid black" }}
-                      />
+                      /> */}
+                      <select
+                        className="p-4 w-full"
+                        onChange={(e) => {setCategory(e.target.value)}}
+                        name="category"
+                        id="category"
+                        value={values.bookName}
+                      >
+                        {/* Your select options go here */}
+                        {categories.map((cat) => {
+                          return (
+                            <option value={cat}>
+                              {cat}
+                            </option>
+                          );
+                        })}
+                      </select>
                     </FormControl>
 
                     <Stack my={"5"} spacing={10}>
@@ -295,8 +353,11 @@ export default function AddBook() {
                       >
                         Add Book
                       </Button>
-                      <Link href={'/admin'} className="text-blue-500 underline text-center">
-                          Go Back to dashboard
+                      <Link
+                        href={"/admin"}
+                        className="text-blue-500 underline text-center"
+                      >
+                        Go Back to dashboard
                       </Link>
                     </Stack>
                   </form>
