@@ -32,7 +32,7 @@ export default function BookView() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const user = useSelector((state:RootState) => state.dashboardSlice)
   const handleFromDateSelect = (date:any) => {
-    setToSelectedDate(date);
+    setFromSelectedDate(date);
   };
   const handleSubmitBorrow = async () => {
 
@@ -70,7 +70,7 @@ export default function BookView() {
         setIsloading(false)
   }
   const handleToDateSelect = (date:any) => {
-    setFromSelectedDate(date);
+    setToSelectedDate(date);
   };
   useEffect(() => {
     console.log(fromselectedDate)

@@ -10,9 +10,10 @@ interface compProps {
   columns: any;
   title: string;
   cta?: any;
+  cta_link?:string
 }
 
-export default function TableB({ data, columns, title, cta }: compProps) {
+export default function TableB({ data, columns, title, cta, cta_link }: compProps) {
   const table = useReactTable({
     data,
     columns,
@@ -20,7 +21,7 @@ export default function TableB({ data, columns, title, cta }: compProps) {
   });
 
   return (
-    <div className="flex-1 rounded-xl bg-white p-4 min-w-[330px]">
+    <div className="flex-1 rounded-xl max-h-[400px] overflow-y-auto bg-white p-4 min-w-[330px]">
       <div className="w-full flex justify-between items-center mb-3">
         <h1 className="font-bold">{title}</h1>
 
@@ -46,7 +47,7 @@ export default function TableB({ data, columns, title, cta }: compProps) {
             </tr>
           ))}
         </thead>
-        <tbody style={{ fontSize: "calc(0.5rem + 0.25vw)" }}>
+        <tbody  style={{ fontSize: "calc(0.5rem + 0.25vw)" }}>
           {table.getRowModel().rows.map((row) => (
             <tr key={`${row.id} ${Math.random()}`}>
               {row.getVisibleCells().map((cell) => (

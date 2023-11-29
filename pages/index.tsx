@@ -66,7 +66,7 @@ export default function login() {
           }
         );
         setIsLoading(false)
-        // console.log(res_borrowed_books.data);
+        console.log(res.data);
         if (res.data.success) {
             const {email, fullName, phoneNumber, profilePhoto, regNo, bio} = res.data.user
             const borrowed_books = res_borrowed_books.data.borrowedBooks

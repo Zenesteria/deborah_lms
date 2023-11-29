@@ -11,6 +11,7 @@ import {
   BooksView,
   SettingsView,
 } from "@/components";
+import AddUser from "@/components/AddUser";
 import BookView from "@/components/BookView";
 import { RootState } from "@/redux/store";
 import { books_data, options } from "@/util/aux_data";
@@ -23,7 +24,7 @@ export default function Home() {
   const dashboardState = useSelector(
     (state: RootState) => state.dashboardSlice
   );
-  const borrowed_books_len = dashboardState.books.filter((book) =>book.isbn)
+  const borrowed_books_len = dashboardState.borrowed_books.filter((book) =>book.isbn)
   const overdue_books_len = dashboardState.books.filter((book) =>book.isbn)
   return (
     dashboardState.type == 'admin'?(<Main>
@@ -110,8 +111,10 @@ export default function Home() {
 
         {/* Books View */}
         {dashboardState.view == "Books" ? <BooksView /> : null}
-        {/* Books View */}
+        {/* Book View */}
         {dashboardState.view == "Book" ? <BookView /> : null}
+        {/* Book View */}
+        {dashboardState.view == "AddUser" ? <AddUser /> : null}
 
         {/* Settings View */}
         {dashboardState.view == "Settings" ||
