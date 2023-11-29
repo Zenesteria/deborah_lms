@@ -4,15 +4,18 @@ import Link from 'next/link';
 import React,{useState, useEffect} from 'react'
 import DateSelector from './DatePicker';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { book_v1 } from '@/interface';
+import { useRouter } from 'next/router';
+import { changeView } from '@/redux/dashboardSlice';
 
 export default function AddUser() {
     const user = useSelector((state:RootState) => state.dashboardSlice)
     const [isLoading,setIsLoading] = useState(false)
     const [toselectedDate, setToSelectedDate] = useState(null);
     const [fromselectedDate, setFromSelectedDate] = useState(null);
+    const dispatch = useDispatch();
 
     const [msg,setMsg] = useState('')
     const [desc,setDesc] = useState('')
@@ -106,6 +109,9 @@ export default function AddUser() {
               );
             //   console.log(res.data);
               setMsg(res.data.response.data.message);
+                dispatch(changeView({
+                    view:'default'
+                }))
             } catch (error: any) {
             //   console.log(error);
               setMsg(error.response.data.message);
