@@ -15,8 +15,9 @@ import React,{useEffect, useState} from "react";
 import { FaCheck } from "react-icons/fa";
 import DateSelector from "./DatePicker";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { changeView, setBorrowedBooks } from "@/redux/dashboardSlice";
 
 export default function BookView() {
   const handleBorrow = async () => {};
@@ -30,6 +31,7 @@ export default function BookView() {
   const [success, setSuccess] = useState('');
   
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch()
   const user = useSelector((state:RootState) => state.dashboardSlice)
   const handleFromDateSelect = (date:any) => {
     setFromSelectedDate(date);
@@ -59,6 +61,27 @@ export default function BookView() {
                   Authorization: `Bearer ${user.jwt_token}`,
                 },
               }
+            );
+            let res_borrowed_books = await axios.get(
+              "https://library-management-system-4hev.onrender.com/api/user/books/borrowed",
+              {
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${user.jwt_token}`,
+                },
+              }
+            );
+            const borrowed_books = res_borrowed_books.data.borrowedBooks;
+            dispatch(
+              setBorrowedBooks({
+                borrowed_books,
+              })
+            );
+            dispatch(
+              changeView({
+                view: "My Shelf",
+              })
             );
             console.log(res.data)
             setSuccess('Book Borrowed Successfully')

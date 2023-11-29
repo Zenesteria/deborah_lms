@@ -117,6 +117,7 @@ export default function AddBook() {
           setIsLoading(false);
           setMsg('Book Added Successfully')
           console.log(res.data);
+          router.push('/admin')
           //   alert(values)
         }}
         validate={(values) => {
